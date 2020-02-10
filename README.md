@@ -8,7 +8,11 @@ To compute sentence similarity using BERT.
 
 ## How to start this example?
 
-TBA
+### Setup
+
+```
+pip install -r requirements.txt
+```
 
 ### Run on Local
 
