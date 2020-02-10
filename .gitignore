@@ -1,0 +1,16 @@
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# venv
+bin/
+include/
+lib/
+
+# models
+efs/model/
+
+__pycache__/
+pyvenv.cfg

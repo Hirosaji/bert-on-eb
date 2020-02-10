@@ -1,0 +1,5 @@
+Flask==1.1.1
+Flask-Cors==3.0.8
+numpy==1.16.4
+sentencepiece==0.1.85
+tensorflow==1.14.0
