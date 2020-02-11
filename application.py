@@ -35,7 +35,7 @@ def calc_simlarity(total, each):
 
 class convert_to_simlarity:
     def __init__(self):
-        self.output = {"body": None, "sim": None}
+        self.output = {"body": None}
 
     def from_texts(self, body):
         self.output["body"] = body
