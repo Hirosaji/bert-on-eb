@@ -40,16 +40,16 @@ class convert_to_simlarity:
     def from_texts(self, target, texts):
         self.output["target"] = target
         self.output["texts"] = texts
-
-        # run BERT
         self.output["sims"] = self.texts2similarity()
 
         return self.output
 
     def texts2similarity(self):
+        # get futures per sentence
         body = [self.output["target"]] + self.output["texts"]
         raw_features = get_futures(BERT_PRAMS, body)
 
+        # extract "[CLS]" features
         cls_features = []
         for raw_feature in raw_features:
             cls_feature = list(
@@ -57,6 +57,7 @@ class convert_to_simlarity:
             )
             cls_features.append(cls_feature[0])
 
+        # compute cosine simlarity
         simlarities = calc_simlarity(cls_features[0], cls_features[1:])
 
         return simlarities
@@ -78,12 +79,7 @@ application.add_url_rule(
     "index",
     (
         lambda: jsonify(
-            {
-                "type": "check mount file",
-                "context": {
-                    "message": "Success!",
-                },
-            }
+            {"type": "check mount file", "context": {"message": "Success!",},}
         )
     ),
     methods=["GET"],
@@ -95,18 +91,13 @@ application.add_url_rule(
     "mount check",
     (
         lambda: jsonify(
-            {
-                "type": "check mount file",
-                "context": {
-                    "mount_file": checkMount(),
-                },
-            }
+            {"type": "check mount file", "context": {"mount_file": checkMount(),},}
         )
     ),
     methods=["GET"],
 )
 
-# compute sentence similarity
+# calculate sentence similarity
 application.add_url_rule(
     "/sim",
     "similarity",
@@ -115,8 +106,7 @@ application.add_url_rule(
             {
                 "type": "sentence similarity",
                 "context": req.from_texts(
-                    request.get_json()["target"],
-                    request.get_json()["texts"],
+                    request.get_json()["target"], request.get_json()["texts"],
                 ),
             }
         )
