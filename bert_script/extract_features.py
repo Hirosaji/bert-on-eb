@@ -274,7 +274,9 @@ def get_futures(PARAMS, input_data):
   bert_config = modeling.BertConfig.from_json_file(PARAMS['bert_config_file'])
 
   tokenizer = tokenization.FullTokenizer(
-      vocab_file=PARAMS['vocab_file'], model_file=PARAMS['model_file'], do_lower_case=PARAMS['do_lower_case'])
+      vocab_file=PARAMS['vocab_file'],
+      model_file=PARAMS['model_file'],
+      do_lower_case=PARAMS['do_lower_case'])
 
   is_per_host = tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2
   run_config = tf.contrib.tpu.RunConfig(

@@ -35,10 +35,11 @@ def calc_simlarity(total, each):
 
 class convert_to_simlarity:
     def __init__(self):
-        self.output = {"body": None}
+        self.output = {"target": None, "texts": None}
 
-    def from_texts(self, body):
-        self.output["body"] = body
+    def from_texts(self, target, texts):
+        self.output["target"] = target
+        self.output["texts"] = texts
 
         # run BERT
         self.output["sims"] = self.texts2similarity()
@@ -46,7 +47,7 @@ class convert_to_simlarity:
         return self.output
 
     def texts2similarity(self):
-        body = self.output["body"]
+        body = [self.output["target"]] + self.output["texts"]
         raw_features = get_futures(BERT_PRAMS, body)
 
         cls_features = []
@@ -113,7 +114,10 @@ application.add_url_rule(
         lambda: jsonify(
             {
                 "type": "sentence similarity",
-                "context": req.from_texts(request.get_json()["texts"]),
+                "context": req.from_texts(
+                    request.get_json()["target"],
+                    request.get_json()["texts"],
+                ),
             }
         )
     ),
