@@ -15,7 +15,7 @@ import tensorflow as tf
 import json
 
 
-def checkPwd():
+def checkMount():
     with open("/efs/sample_text.txt") as f:
         output = f.read()
     return output
@@ -35,17 +35,17 @@ def calc_simlarity(total, each):
 
 class convert_to_simlarity:
     def __init__(self):
-        self.output = {"body": None, "title": None, "link": None, "sim": None}
+        self.output = {"body": None, "sim": None}
 
     def from_texts(self, body):
         self.output["body"] = body
 
         # run BERT
-        self.output["sims"] = self.kijiBody2similarity()
+        self.output["sims"] = self.texts2similarity()
 
         return self.output
 
-    def kijiBody2similarity(self):
+    def texts2similarity(self):
         body = self.output["body"]
         raw_features = get_futures(BERT_PRAMS, body)
 
@@ -78,14 +78,10 @@ application.add_url_rule(
     (
         lambda: jsonify(
             {
-                "data": [
-                    {"item": "total", "ratio": 0.75},
-                    {"item": "1st", "ratio": 0.57},
-                    {"item": "2nd", "ratio": 0.23},
-                    {"item": "3rd", "ratio": 0.56},
-                    {"item": "4th", "ratio": 0.95},
-                    {"item": "5th", "ratio": 0.81},
-                ]
+                "type": "check mount file",
+                "context": {
+                    "message": "Success!",
+                },
             }
         )
     ),
@@ -93,15 +89,32 @@ application.add_url_rule(
 )
 
 # check whether there is mount file
-application.add_url_rule("/pwd", "pwd", (lambda: jsonify({"pwd": checkPwd()})))
-
-# evaluate article by kiji_body
 application.add_url_rule(
-    "/sim",
-    "sim",
+    "/mount_check",
+    "mount check",
     (
         lambda: jsonify(
-            {"id": "", "context": req.from_texts(request.get_json()["texts"]),}
+            {
+                "type": "check mount file",
+                "context": {
+                    "mount_file": checkMount(),
+                },
+            }
+        )
+    ),
+    methods=["GET"],
+)
+
+# compute sentence similarity
+application.add_url_rule(
+    "/sim",
+    "similarity",
+    (
+        lambda: jsonify(
+            {
+                "type": "sentence similarity",
+                "context": req.from_texts(request.get_json()["texts"]),
+            }
         )
     ),
     methods=["POST"],
