@@ -37,7 +37,7 @@ class convert_to_simlarity:
     def __init__(self):
         self.output = {"body": None, "title": None, "link": None, "sim": None}
 
-    def from_textBody(self, body):
+    def from_texts(self, body):
         self.output["body"] = body
 
         # run BERT
@@ -101,7 +101,7 @@ application.add_url_rule(
     "sim",
     (
         lambda: jsonify(
-            {"id": "", "context": req.from_textBody(request.get_json()["texts"]),}
+            {"id": "", "context": req.from_texts(request.get_json()["texts"]),}
         )
     ),
     methods=["POST"],
