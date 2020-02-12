@@ -35,7 +35,7 @@ def calc_simlarity(total, each):
 
 class convert_to_simlarity:
     def __init__(self):
-        self.output = {"target": None, "texts": None}
+        self.output = {"target": None, "texts": None, "sims": None}
 
     def from_texts(self, target, texts):
         self.output["target"] = target
@@ -79,7 +79,10 @@ application.add_url_rule(
     "index",
     (
         lambda: jsonify(
-            {"type": "check mount file", "context": {"message": "Success!",},}
+            {
+                "type": "index",
+                "context": {"message": "Success!"}
+            }
         )
     ),
     methods=["GET"],
@@ -91,7 +94,10 @@ application.add_url_rule(
     "mount check",
     (
         lambda: jsonify(
-            {"type": "check mount file", "context": {"mount_file": checkMount(),},}
+            {
+                "type": "check mount file",
+                "context": {"mount_file": checkMount()}
+            }
         )
     ),
     methods=["GET"],
@@ -106,8 +112,9 @@ application.add_url_rule(
             {
                 "type": "sentence similarity",
                 "context": req.from_texts(
-                    request.get_json()["target"], request.get_json()["texts"],
-                ),
+                    request.get_json()["target"],
+                    request.get_json()["texts"]
+                )
             }
         )
     ),
