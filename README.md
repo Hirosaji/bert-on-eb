@@ -11,13 +11,13 @@ To compute sentence similarity using BERT.
 ### Setup
 
 ```
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ### Run on Local
 
 ```
-python3 application.py
+$ python3 application.py
 ```
 
 ### Run on Elastic Beanstalk
