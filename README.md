@@ -14,6 +14,10 @@ To compute sentence similarity using BERT.
 $ pip install -r requirements.txt
 ```
 
+### Get models
+
+TBA
+
 ### Run on Local
 
 ```
