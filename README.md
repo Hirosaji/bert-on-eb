@@ -16,7 +16,9 @@ pip install -r requirements.txt
 
 ### Run on Local
 
-TBA
+```
+python3 application.py
+```
 
 ### Run on Elastic Beanstalk
 
