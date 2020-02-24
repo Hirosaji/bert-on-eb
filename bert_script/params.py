@@ -1,7 +1,7 @@
 BERT_PRAMS = {
     'vocab_file': './efs/sp/vocab.txt',
     'bert_config_file': './efs/bert_config.json',
-    'init_checkpoint': './efs/model_en/bert_model.ckpt',
+    'init_checkpoint': './efs/model/bert_model.ckpt',
     'do_lower_case': False,
     'layers': "-1,-2,-3,-4",
     'max_seq_length': 512,
