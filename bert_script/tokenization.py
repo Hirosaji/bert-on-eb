@@ -165,22 +165,26 @@ def whitespace_tokenize(text):
 class FullTokenizer(object):
   """Runs end-to-end tokenziation."""
 
-  def __init__(self, vocab_file, model_file, do_lower_case=True):
-    self.tokenizer = SentencePieceTokenizer(model_file, do_lower_case=do_lower_case)
+  def __init__(self, vocab_file, do_lower_case=True,
+               piece='word', piece_model=None):
     self.vocab = load_vocab(vocab_file)
     self.inv_vocab = {v: k for k, v in self.vocab.items()}
-    # self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
-    # self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
+    self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
+    self.piece = piece
+    if self.piece == 'sentence':
+      self.sentencepiece_tokenizer = SentencePieceTokenizer(model=piece_model)
+    else: # Default to WordPiece
+      self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
 
   def tokenize(self, text):
-    split_tokens = self.tokenizer.tokenize(text)
-    return split_tokens
-
-    # split_tokens = []
-    # for token in self.basic_tokenizer.tokenize(text):
-    #   for sub_token in self.wordpiece_tokenizer.tokenize(token):
-    #     split_tokens.append(sub_token)
-
+    split_tokens = []
+    if self.piece == 'sentence':
+      text = ' '.join(whitespace_tokenize(text))
+      split_tokens = self.sentencepiece_tokenizer.tokenize(text)
+    else:
+      for token in self.basic_tokenizer.tokenize(text):
+        for sub_token in self.wordpiece_tokenizer.tokenize(token):
+          split_tokens.append(sub_token)
     return split_tokens
 
   def convert_tokens_to_ids(self, tokens):
@@ -193,7 +197,7 @@ class FullTokenizer(object):
 class SentencePieceTokenizer(object):
     """Runs SentencePiece tokenization (from raw text to tokens list)"""
 
-    def __init__(self, model_file, do_lower_case=False):
+    def __init__(self, model_file=None, do_lower_case=False):
         """Constructs a SentencePieceTokenizer."""
         self.tokenizer = sp.SentencePieceProcessor()
         if self.tokenizer.Load(model_file):

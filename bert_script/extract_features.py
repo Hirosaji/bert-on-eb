@@ -275,7 +275,6 @@ def get_futures(PARAMS, input_data):
 
   tokenizer = tokenization.FullTokenizer(
       vocab_file=PARAMS['vocab_file'],
-      model_file=PARAMS['model_file'],
       do_lower_case=PARAMS['do_lower_case'])
 
   is_per_host = tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2
