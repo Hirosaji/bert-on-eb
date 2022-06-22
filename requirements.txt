@@ -1,5 +1,5 @@
 Flask==1.1.1
 Flask-Cors==3.0.8
-numpy==1.16.4
+numpy==1.22.0
 sentencepiece==0.1.85
 tensorflow==2.3.1
